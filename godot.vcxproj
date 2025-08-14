@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9A2FB295-38D9-4994-9497-26FF91C85465}</ProjectGuid>
+    <RootNamespace>godot</RootNamespace>
+    <Keyword>MakeFileProj</Keyword>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
+    <GodotConfiguration>Debug</GodotConfiguration>
+    <GodotPlatform>arm64</GodotPlatform>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <GodotConfiguration>Debug</GodotConfiguration>
+    <GodotPlatform>x64</GodotPlatform>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IsWindows>$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Windows)))</IsWindows>
+    <IsMac>$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))</IsMac>
+    <IsLinux>$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))</IsLinux>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.Default.props" Condition="$(IsWindows)"/>
+  <Import Project="$(MSBuildProjectDirectory)/targets/JetBrains.Rider.Cpp.targets" Condition="$(IsMac) OR $(IsLinux)"/>  
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <PlatformToolset>v143</PlatformToolset> <!--Might be overridden in the platform specific import or godot.user.props -->
+    <DefaultPlatformToolset Condition="'$(DefaultPlatformToolset)'==''"/> <!--Workaround until https://youtrack.jetbrains.com/issue/RIDER-123783 is resolved. -->
+    <OutDir>$(SolutionDir)/bin</OutDir>
+    <IntDir>obj/</IntDir>
+    <LayoutDir>$(OutDir)/Layout</LayoutDir>
+    <NMakeIncludeSearchPath>godot-cpp/gen/include;godot-cpp/include;godot-cpp/gdextension;$(NMakeIncludeSearchPath);</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.props" Condition="$(IsWindows)"/>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <Import Project="$(MSBuildProjectDirectory)/targets/nmake.props"/>
+  <Import Project="$(MSBuildProjectDirectory)/targets/godot.user.props" Condition="Exists('$(MSBuildProjectDirectory)/targets/godot.user.props')"/>
+  <ItemGroup>
+    <ClInclude Include="godot-cpp/**/*.h"/>
+    <ClInclude Include="godot-cpp/**/*.hpp"/>
+    <ClInclude Include="src/**/*.h"/>
+    <ClCompile Include="godot-cpp/**/*.cpp"/>
+    <ClCompile Include="src/**/*.cpp"/>
+  </ItemGroup>
+    <!-- Build/Rebuild/Clean targets for NMake are defined in MSVC, so we need to provide them, when using MSBuild without MSVC targets -->
+  <Import Project="$(MSBuildProjectDirectory)/targets/nmake.substitution.props" Condition="!Exists('$(VCTargetsPath)/Microsoft.Cpp.targets')" />
+    
+  <Import Project="$(VCTargetsPath)/Microsoft.Cpp.targets" Condition="$(IsWindows)"/>
+</Project>

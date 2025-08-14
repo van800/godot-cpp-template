@@ -1,0 +1,27 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "godot", "godot.vcxproj", "{9A2FB295-38D9-4994-9497-26FF91C85465}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|arm64 = Debug|arm64
+		Debug|Win32 = Debug|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|x64.ActiveCfg = debug|x64
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|x64.Build.0 = debug|x64
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|arm64.ActiveCfg = debug|arm64
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|arm64.Build.0 = debug|arm64
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|Win32.ActiveCfg = debug|Win32
+		{9A2FB295-38D9-4994-9497-26FF91C85465}.debug|Win32.Build.0 = debug|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {75408944-4e38-4094-a91b-4730439ab8ee}
+	EndGlobalSection
+EndGlobal
