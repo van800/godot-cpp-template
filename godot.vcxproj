@@ -176,11 +176,8 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ItemGroup>
-    <ClInclude Include="godot-cpp/**/*.h"/>
-    <ClInclude Include="godot-cpp/**/*.hpp"/>
-    <ClInclude Include="src/**/*.h"/>
-    <ClCompile Include="godot-cpp/**/*.cpp"/>
-    <ClCompile Include="src/**/*.cpp"/>
+    <None Include="src/**/*.h"/>
+    <None Include="src/**/*.cpp"/>
   </ItemGroup>
   
     <!-- Build/Rebuild/Clean targets for NMake are defined in MSVC, so we need to provide them, when using MSBuild without MSVC targets -->
