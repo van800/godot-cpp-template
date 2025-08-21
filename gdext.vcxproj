@@ -222,10 +222,5 @@
     <Copy SourceFiles="@(BuiltBinary)" DestinationFolder="$(GodotBinDir)" SkipUnchangedFiles="true" Condition="Exists('%(BuiltBinary.Identity)')" />
   </Target>
 
-  <ItemGroup>
-    <!-- Shows currently selected output from example.gdextension in the Solution Explorer -->
-    <None Include="$(GodotBinDir)/**" />
-  </ItemGroup>
-
   <Import Project="$(VCTargetsPath)/Microsoft.Cpp.targets" Condition="$(IsWindows)"/>
 </Project>
