@@ -182,45 +182,5 @@
   
     <!-- Build/Rebuild/Clean targets for NMake are defined in MSVC, so we need to provide them, when using MSBuild without MSVC targets -->
   <Import Project="$(MSBuildProjectDirectory)/targets/nmake.substitution.props" Condition="!Exists('$(VCTargetsPath)/Microsoft.Cpp.targets')" />
-    
-  <!-- Mirror CMake post-build copy into the Godot project bin directory -->
-  <PropertyGroup>
-    <!-- Source file produced by scons lives under bin/$(GodotPlatform). Name patterns follow example.gdextension -->
-    <WinOutputFileName>$(ExtensionName).$(GodotPlatform).$(GodotTemplate).$(Arch).dll</WinOutputFileName>
-    <MacOutputFileName>lib$(ExtensionName).$(GodotPlatform).$(GodotTemplate).dylib</MacOutputFileName>
-    <UnixOutputFileName>lib$(ExtensionName).$(GodotPlatform).$(GodotTemplate).$(Arch).so</UnixOutputFileName>
-    <WebOutputWildcard>lib$(ExtensionName).$(GodotPlatform).$(GodotTemplate).$(Arch).*.*.wasm</WebOutputWildcard>
-    <GodotBinDir>$(MSBuildProjectDirectory)\$(GameProjectDir)\bin\$(GodotPlatform)</GodotBinDir>
-    <BinDir>$(MSBuildProjectDirectory)\bin\$(GodotPlatform)</BinDir>
-  </PropertyGroup>
-
-  <Target Name="AfterBuild" DependsOnTargets="Build">
-    <!-- Ensure destination exists -->
-    <MakeDir Directories="$(GodotBinDir)" />
-
-    <!-- Windows: copy exact file name -->
-    <ItemGroup Condition="'$(GodotPlatform)' == 'windows'">
-      <BuiltBinary Include="$(BinDir)\$(WinOutputFileName)" />
-    </ItemGroup>
-
-    <!-- macOS: single file name without arch -->
-    <ItemGroup Condition="'$(GodotPlatform)' == 'macos'">
-      <BuiltBinary Include="$(BinDir)\$(MacOutputFileName)" />
-    </ItemGroup>
-
-    <!-- Linux/Android: use .so name with arch -->
-    <ItemGroup Condition="'$(GodotPlatform)' == 'linux' or '$(GodotPlatform)' == 'android'">
-      <BuiltBinary Include="$(BinDir)\$(UnixOutputFileName)" />
-    </ItemGroup>
-
-    <!-- Web: filenames include extra markers (e.g., nothreads/double). Copy all that match -->
-    <ItemGroup Condition="'$(GodotPlatform)' == 'web'">
-      <BuiltBinary Include="$(BinDir)\$(WebOutputWildcard)" />
-    </ItemGroup>
-
-    <!-- Perform copy if items exist -->
-    <Copy SourceFiles="@(BuiltBinary)" DestinationFolder="$(GodotBinDir)" SkipUnchangedFiles="true" Condition="Exists('%(BuiltBinary.Identity)')" />
-  </Target>
-
   <Import Project="$(VCTargetsPath)/Microsoft.Cpp.targets" Condition="$(IsWindows)"/>
 </Project>
