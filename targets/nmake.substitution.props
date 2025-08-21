@@ -23,15 +23,14 @@
       <ForcedUsingFiles>$(NMakeForcedUsingAssemblies)</ForcedUsingFiles>
       <PreprocessorDefinitions>$(NMakePreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
-    <!-- check get_platforms in each msvs.py for possible value of those conditions -->
-    <!-- MSVC Platform.Common.props for possible TargetMachine values -->
-    <Link Condition="'$(Platform)' == 'arm64'">
+    <!-- Reflects what Platform.Common.props does. -->
+    <Link Condition="'$(Arch)' == 'arm64'">
       <TargetMachine>MachineARM64</TargetMachine>
     </Link>
-    <Link Condition="'$(Platform)' == 'x64'">
+    <Link Condition="'$(Arch)' == 'x86_64'">
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
-    <Link Condition="'$(Platform)' == 'Win32'">
+    <Link Condition="'$(Arch)' == 'x86_32'">
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
