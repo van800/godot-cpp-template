@@ -82,3 +82,32 @@ set(GODOT_PROJECT_BINARY_DIR "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/bin/${G
 add_custom_command(TARGET ${LIBNAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:${LIBNAME}>" "${GODOT_PROJECT_BINARY_DIR}/$<TARGET_FILE_NAME:${LIBNAME}>"
 )
+
+# Attempt to read Godot executable path from the project's metadata, but allow manual override via cache
+set(GODOT_EXECUTABLE "" CACHE FILEPATH "Path to the Godot executable")
+if(NOT GODOT_EXECUTABLE)
+    # Try to read from: <GODOT_PROJECT_DIR>/.godot/editor/project_metadata.cfg
+    set(_GODOT_PROJECT_METADATA "${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}/.godot/editor/project_metadata.cfg")
+    if(EXISTS "${_GODOT_PROJECT_METADATA}")
+        file(READ "${_GODOT_PROJECT_METADATA}" _GODOT_PROJECT_METADATA_CONTENTS)
+        # Capture: executable_path="/path/to/Godot"
+        string(REGEX MATCH "executable_path=\"([^\"]+)\"" _GODOT_EXEC_MATCH "${_GODOT_PROJECT_METADATA_CONTENTS}")
+        if(CMAKE_MATCH_1)
+            set(GODOT_EXECUTABLE "${CMAKE_MATCH_1}" CACHE FILEPATH "Path to the Godot executable" FORCE)
+            message(STATUS "Godot executable detected from project metadata: ${GODOT_EXECUTABLE}")
+        else()
+            message(WARNING "Could not find 'executable_path' in ${_GODOT_PROJECT_METADATA}. You can set GODOT_EXECUTABLE manually in CMake cache.")
+        endif()
+    else()
+        message(WARNING "Godot project metadata not found at ${_GODOT_PROJECT_METADATA}. You can set GODOT_EXECUTABLE manually in CMake cache.")
+    endif()
+endif()
+
+add_custom_target(run-godot
+        COMMAND ${GODOT_EXECUTABLE} --path ${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}
+        DEPENDS ${LIBNAME}
+        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/${GODOT_PROJECT_DIR}
+        USES_TERMINAL
+)
+
+message(GODOT_EXECUTABLE = ${GODOT_EXECUTABLE})
